@@ -19,6 +19,8 @@ fighter_url_list = list(set(fighter_url_list))
 for url in fighter_url_list:
     if 'fighter-details' not in url:
         fighter_url_list.remove(url)
+    elif 'statistics' in url:
+        fighter_url_list.remove(url)
 
 #saving output for later manipulation
 with open('fighter_url_list', 'wb') as f:
