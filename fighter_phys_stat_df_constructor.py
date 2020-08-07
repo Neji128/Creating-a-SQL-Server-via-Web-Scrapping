@@ -1,4 +1,13 @@
+import pickle
+import requests, re
+from bs4 import BeautifulSoup
+import json
+import pandas as pd
 
+with open('fighter_url_list', 'rb') as f:
+    fighter_url_list = pickle.load(f)
+
+#Generating Soup Lists
 
 def fighter_soup_generator(url):
     '''Meant to parse any url via beuatiful soup
@@ -12,7 +21,25 @@ def fighter_soup_generator(url):
     
     return soup
 
+#generating a soup_list to limit requests
+fighter_url_soup_list = list(map(fighter_soup_generator, fighter_url_list))
 
+def base_stats_soup_generator(soup):
+    '''Meant to identiy statistics in the context of UFC Stats urls.
+    
+    Args:
+        
+        soup(BeautifulSoup object) : must be an unaltered soup'''
+    
+    base_stats = soup.findChildren('li', attrs={'class': re.compile('b-list')})
+    
+    return base_stats
+
+#generating a list of parsed soup objects
+
+fighter_stats_objects = list(map(base_stats_soup_generator, fighter_url_soup_list))
+
+# Construction of Fighter Physical Statistics DataFrame 
 
 def fighter_name(soup):
     '''Identifies fighter history to be parsed.
@@ -69,6 +96,20 @@ def basic_stats_weight(soup):
         
     return weight 
 
+def basic_stats_reach(soup):
+    
+    reach = soup[2].text.strip().split(':')[1].strip().replace('"', '')
+    
+    if reach == '--':
+        
+        pass
+    
+    else:
+        
+        reach = int(reach)
+        
+    return reach
+
 def basic_stats_stance(soup):
     
     stance = soup[3].text.strip().split(':')[1].strip()
@@ -83,40 +124,40 @@ def basic_stats_DOB(soup):
 
 #Creating daat for creation of dataframe
 
-fighter_names = list(map(fighter_name, fighter_soup_list))
+fighter_names = list(map(fighter_name, fighter_url_soup_list))
 
-fighter_records = list(map(fighter_record, fighter_soup_list))
+fighter_records = list(map(fighter_record, fighter_url_soup_list))
 
-fighter_heights =  list(map(basic_stats_height, stats_soups))
+fighter_heights =  list(map(basic_stats_height, fighter_stats_objects))
 
-fighter_weights = list(map(basic_stats_weight, stats_soups))
+fighter_weights = list(map(basic_stats_weight, fighter_stats_objects))
 
-fighter_reachs = list(map(basic_stats_reach, stats_soups))
+fighter_reachs = list(map(basic_stats_reach, fighter_stats_objects))
 
-fighter_stances = list(map(basic_stats_stance, stats_soups))
+fighter_stances = list(map(basic_stats_stance, fighter_stats_objects))
 
-fighter_DOBs = list(map(basic_stats_DOB, stats_soups))
+fighter_DOBs = list(map(basic_stats_DOB, fighter_stats_objects))
 
 #Constructing final dataframe
 
-fighter_basic_stats_df = pd.DataFrame()
+fighter_phys_stats_df = pd.DataFrame()
 
-fighter_basic_stats_df['name'] = fighter_names
+fighter_phys_stats_df['name'] = fighter_names
 
-fighter_basic_stats_df['record'] = fighter_records
+fighter_phys_stats_df['record'] = fighter_records
 
-fighter_basic_stats_df['height'] = fighter_heights
+fighter_phys_stats_df['height'] = fighter_heights
 
-fighter_basic_stats_df['weight'] = fighter_weights
+fighter_phys_stats_df['weight'] = fighter_weights
 
-fighter_basic_stats_df['reach'] = fighter_reachs
+fighter_phys_stats_df['reach'] = fighter_reachs
 
-fighter_basic_stats_df['stance'] = fighter_stances
+fighter_phys_stats_df['stance'] = fighter_stances
 
-fighter_basic_stats_df['DOB'] = fighter_DOBs
+fighter_phys_stats_df['DOB'] = fighter_DOBs
 
 #Saving fighter physical stats
 
-fighter_physical_stats_df.to_csv('fighter_physical_stats_csv', index=False)
+fighter_phys_stats_df.to_csv('fighter_physical_stats_csv', index=False)
 
 
