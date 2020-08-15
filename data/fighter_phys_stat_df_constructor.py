@@ -80,7 +80,7 @@ def basic_stats_height(soup):
     
         final_height = height_to_inches + inches
     
-        return (inches + height_to_inches)
+        return final_height
 
 def basic_stats_weight(soup):
     
@@ -140,24 +140,24 @@ fighter_DOBs = list(map(basic_stats_DOB, fighter_stats_objects))
 
 #Constructing final dataframe
 
-fighter_phys_stats_df = pd.DataFrame()
+fighter_physical_stats_df = pd.DataFrame()
 
-fighter_phys_stats_df['name'] = fighter_names
+fighter_physical_stats_df['name'] = fighter_names
 
-fighter_phys_stats_df['record'] = fighter_records
+fighter_physical_stats_df['record'] = fighter_records
 
-fighter_phys_stats_df['height'] = fighter_heights
+fighter_physical_stats_df['height'] = fighter_heights
 
-fighter_phys_stats_df['weight'] = fighter_weights
+fighter_physical_stats_df['weight'] = fighter_weights
 
-fighter_phys_stats_df['reach'] = fighter_reachs
+fighter_physical_stats_df['reach'] = fighter_reachs
 
-fighter_phys_stats_df['stance'] = fighter_stances
+fighter_physical_stats_df['stance'] = fighter_stances
 
-fighter_phys_stats_df['DOB'] = fighter_DOBs
+fighter_physical_stats_df['DOB'] = fighter_DOBs
 
 #Saving fighter physical stats
 
-fighter_phys_stats_df.to_csv('fighter_physical_stats_csv', index=False)
+fighter_physical_stats_df.to_csv('fighter_physical_stats_csv', index='False')
 
 
