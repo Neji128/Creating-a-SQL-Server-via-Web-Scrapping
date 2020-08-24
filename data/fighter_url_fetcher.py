@@ -21,6 +21,8 @@ for url in fighter_url_list:
         fighter_url_list.remove(url)
     elif 'statistics' in url:
         fighter_url_list.remove(url)
+    elif len(url) < 56:
+        fighter_url_list.remove(url)
 
 #saving output for later manipulation
 with open('fighter_url_list', 'wb') as f:
