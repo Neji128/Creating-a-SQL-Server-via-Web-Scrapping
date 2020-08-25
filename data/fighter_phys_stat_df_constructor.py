@@ -80,7 +80,7 @@ def basic_stats_height(soup):
     
         final_height = height_to_inches + inches
     
-        return final_height
+        return int(final_height)
 
 def basic_stats_weight(soup):
     
