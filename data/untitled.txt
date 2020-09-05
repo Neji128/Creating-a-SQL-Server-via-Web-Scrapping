@@ -1,0 +1,5 @@
+ABOUT Outline
+
+fighter_phys_stat_df_constructor.py
+
+    Houses functions needed to construct dataframe containing each fighters physical statistics 
