@@ -35,6 +35,6 @@ for url in fighter_url_list:
         fighter_url_list.remove(url)
 
 #saving output for later manipulation
-with open('fighter_url_list', 'wb') as f:
+with open('fighter_url_list.csv', 'wb') as f:
     
     pickle.dump(fighter_url_list, f)
