@@ -2,23 +2,6 @@ import requests, re
 from bs4 import BeautifulSoup
 import pandas as pd
 
-def createFighterBasicStatsSoup(soup):
-    '''
-    Creates a beautiful soup object targeting the box_list items containing fighter stats
-        
-        Args:
-            
-            soup (bs4 object): unmodified BeautifulSoup object geted from ufcstats.com/fighters list
-        
-        Output:
-            
-            soup (bs4 object): enables getion of fighter statistics
-    '''   
-    
-    basic_stats_soup = soup.findChildren("li", attrs={"class": re.compile("b-list")})
-    
-    return basic_stats_soup
-
 def getFighterName(soup):
     '''
     Identifies fighter history to be parsed.
